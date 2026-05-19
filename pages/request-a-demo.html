@@ -27,19 +27,21 @@
   <section>
     <div class="container">
       <div class="prose">
-        <form class="form" data-dd-form>
+        <form class="form" data-dd-form data-form-type="demo">
           <div class="form-success">✓ Thanks — a member of our team will reach out within one business day to confirm your slot.</div>
+          <div class="form-error" role="alert"></div>
+          <input type="text" name="_hp" tabindex="-1" autocomplete="off" style="position:absolute;left:-9999px;opacity:0" aria-hidden="true" />
           <div class="form-row">
-            <div class="form-field"><label>First name</label><input type="text" required /></div>
-            <div class="form-field"><label>Last name</label><input type="text" required /></div>
+            <div class="form-field"><label>First name</label><input type="text" name="fname" required /></div>
+            <div class="form-field"><label>Last name</label><input type="text" name="lname" required /></div>
           </div>
           <div class="form-row">
-            <div class="form-field"><label>Work email</label><input type="email" required /></div>
-            <div class="form-field"><label>Company</label><input type="text" /></div>
+            <div class="form-field"><label>Work email</label><input type="email" name="email" required /></div>
+            <div class="form-field"><label>Company</label><input type="text" name="company" /></div>
           </div>
           <div class="form-field">
             <label>What do you want to see?</label>
-            <select>
+            <select name="interest">
               <option>Full-service research walkthrough</option>
               <option>Brainactive DIY platform demo</option>
               <option>Proprietary panels overview</option>
@@ -47,7 +49,7 @@
               <option>Quality &amp; compliance review</option>
             </select>
           </div>
-          <div class="form-field"><label>Anything we should prep for our call?</label><textarea></textarea></div>
+          <div class="form-field"><label>Anything we should prep for our call?</label><textarea name="notes"></textarea></div>
           <button type="submit" class="btn btn-primary btn-arrow" style="width:100%; justify-content:center">Book my consultation</button>
         </form>
       </div>

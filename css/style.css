@@ -939,6 +939,8 @@ section { padding: clamp(3.5rem, 7vw, 7rem) 0; }
 .form-field textarea { min-height: 110px; resize: vertical; }
 .form-success { display: none; padding: 0.9rem 1rem; background: var(--green-50); color: var(--green-700); border-radius: 10px; margin-bottom: 1rem; font-weight: 500; font-size: 0.92rem; }
 .form-success.show { display: block; }
+.form-error { display: none; padding: 0.9rem 1rem; background: #fdecec; color: #9c2727; border-radius: 10px; margin-bottom: 1rem; font-weight: 500; font-size: 0.92rem; border: 1px solid #f3c2c2; }
+.form-error.show { display: block; }
 
 /* ============================================================
    Responsive

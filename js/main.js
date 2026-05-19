@@ -21,14 +21,57 @@ document.addEventListener('DOMContentLoaded', () => {
   const year = document.getElementById('current-year');
   if (year) year.textContent = new Date().getFullYear();
 
-  // Generic contact form (no backend — replace with your handler later)
+  // Forms → POST to the Cloudflare Worker /api/contact endpoint
+  const CONTACT_ENDPOINT =
+    window.DD_CONTACT_ENDPOINT ||
+    'https://datadiggers-chat.divakar-sharma.workers.dev/api/contact';
+
   document.querySelectorAll('form[data-dd-form]').forEach((form) => {
-    form.addEventListener('submit', (e) => {
+    form.addEventListener('submit', async (e) => {
       e.preventDefault();
+      const submitBtn = form.querySelector('button[type="submit"]');
       const success = form.querySelector('.form-success');
-      if (success) success.classList.add('show');
-      form.reset();
-      setTimeout(() => success && success.classList.remove('show'), 6000);
+      const error = form.querySelector('.form-error');
+      const formType = form.dataset.formType || 'contact';
+
+      const originalLabel = submitBtn ? submitBtn.textContent : '';
+      if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Sending…';
+      }
+      if (error) error.classList.remove('show');
+
+      const fields = Object.fromEntries(new FormData(form).entries());
+
+      try {
+        const response = await fetch(CONTACT_ENDPOINT, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ formType, fields })
+        });
+
+        if (!response.ok) {
+          const body = await response.json().catch(() => ({}));
+          throw new Error(body.error || `Request failed (${response.status})`);
+        }
+
+        if (success) success.classList.add('show');
+        form.reset();
+        setTimeout(() => success && success.classList.remove('show'), 8000);
+      } catch (err) {
+        console.error('[DD Form] Submission failed:', err);
+        if (error) {
+          error.textContent = 'Sorry — we couldn\'t send your message. Please try again, or email rfq@datadiggers-mr.com directly.';
+          error.classList.add('show');
+        } else {
+          alert('Sorry — we couldn\'t send your message. Please try again, or email rfq@datadiggers-mr.com directly.');
+        }
+      } finally {
+        if (submitBtn) {
+          submitBtn.disabled = false;
+          submitBtn.textContent = originalLabel;
+        }
+      }
     });
   });
 

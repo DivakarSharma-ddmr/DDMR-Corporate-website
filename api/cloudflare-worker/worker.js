@@ -72,9 +72,25 @@ You represent DataDiggers. Be helpful, accurate, and stay on topic.`;
 
 const MODEL = "claude-haiku-4-5-20251001";
 
+// ─────────────────────────────────────────────
+// CONTACT FORM CONFIGURATION
+// ─────────────────────────────────────────────
+const CONTACT_TO = "rfq@datadiggers-mr.com";
+// Until you verify your domain in Resend, all email must be sent FROM
+// onboarding@resend.dev. After verification, change this to e.g.
+// "DataDiggers Website <forms@datadiggers-mr.com>".
+const CONTACT_FROM = "DataDiggers Website <onboarding@resend.dev>";
+
+const FORM_TYPES = {
+  contact: { subject: "New Contact Form submission", label: "Contact" },
+  quote:   { subject: "New Quote Request",          label: "Request a Quote" },
+  demo:    { subject: "New Demo Request",           label: "Request a Demo" },
+};
+
 export default {
   async fetch(request, env) {
-    // CORS preflight
+    const url = new URL(request.url);
+
     if (request.method === "OPTIONS") {
       return new Response(null, { headers: corsHeaders() });
     }
@@ -82,70 +98,193 @@ export default {
       return json({ error: "Method not allowed" }, 405);
     }
 
-    let body;
-    try {
-      body = await request.json();
-    } catch {
-      return json({ error: "Invalid JSON" }, 400);
-    }
+    if (url.pathname === "/api/chat")    return handleChat(request, env);
+    if (url.pathname === "/api/contact") return handleContact(request, env);
 
-    const messages = Array.isArray(body.messages) ? body.messages : null;
-    if (!messages || messages.length === 0) {
-      return json({ error: "Missing 'messages' array" }, 400);
-    }
-
-    // Light input validation: cap message count and length
-    if (messages.length > 30) {
-      return json({ error: "Conversation too long. Please refresh." }, 400);
-    }
-    for (const m of messages) {
-      if (typeof m.content !== "string" || m.content.length > 4000) {
-        return json({ error: "Message too long (4000 char limit)." }, 400);
-      }
-      if (m.role !== "user" && m.role !== "assistant") {
-        return json({ error: "Invalid message role." }, 400);
-      }
-    }
-
-    if (!env.ANTHROPIC_API_KEY) {
-      return json({ error: "Server not configured: ANTHROPIC_API_KEY missing." }, 500);
-    }
-
-    try {
-      const upstream = await fetch("https://api.anthropic.com/v1/messages", {
-        method: "POST",
-        headers: {
-          "x-api-key": env.ANTHROPIC_API_KEY,
-          "anthropic-version": "2023-06-01",
-          "content-type": "application/json",
-        },
-        body: JSON.stringify({
-          model: MODEL,
-          max_tokens: 600,
-          system: SYSTEM_PROMPT,
-          messages: messages,
-        }),
-      });
-
-      if (!upstream.ok) {
-        const errText = await upstream.text();
-        console.error("Anthropic API error:", upstream.status, errText);
-        return json({ error: "Upstream error.", details: upstream.status }, 502);
-      }
-
-      const data = await upstream.json();
-      const reply = data.content
-        .filter((c) => c.type === "text")
-        .map((c) => c.text)
-        .join("\n");
-
-      return json({ reply });
-    } catch (err) {
-      console.error("Worker error:", err);
-      return json({ error: "Internal error." }, 500);
-    }
+    return json({ error: "Not found" }, 404);
   },
 };
+
+// ─────────────────────────────────────────────
+// CHAT HANDLER
+// ─────────────────────────────────────────────
+async function handleChat(request, env) {
+  let body;
+  try {
+    body = await request.json();
+  } catch {
+    return json({ error: "Invalid JSON" }, 400);
+  }
+
+  const messages = Array.isArray(body.messages) ? body.messages : null;
+  if (!messages || messages.length === 0) {
+    return json({ error: "Missing 'messages' array" }, 400);
+  }
+
+  if (messages.length > 30) {
+    return json({ error: "Conversation too long. Please refresh." }, 400);
+  }
+  for (const m of messages) {
+    if (typeof m.content !== "string" || m.content.length > 4000) {
+      return json({ error: "Message too long (4000 char limit)." }, 400);
+    }
+    if (m.role !== "user" && m.role !== "assistant") {
+      return json({ error: "Invalid message role." }, 400);
+    }
+  }
+
+  if (!env.ANTHROPIC_API_KEY) {
+    return json({ error: "Server not configured: ANTHROPIC_API_KEY missing." }, 500);
+  }
+
+  try {
+    const upstream = await fetch("https://api.anthropic.com/v1/messages", {
+      method: "POST",
+      headers: {
+        "x-api-key": env.ANTHROPIC_API_KEY,
+        "anthropic-version": "2023-06-01",
+        "content-type": "application/json",
+      },
+      body: JSON.stringify({
+        model: MODEL,
+        max_tokens: 600,
+        system: SYSTEM_PROMPT,
+        messages: messages,
+      }),
+    });
+
+    if (!upstream.ok) {
+      const errText = await upstream.text();
+      console.error("Anthropic API error:", upstream.status, errText);
+      return json({ error: "Upstream error.", details: upstream.status }, 502);
+    }
+
+    const data = await upstream.json();
+    const reply = data.content
+      .filter((c) => c.type === "text")
+      .map((c) => c.text)
+      .join("\n");
+
+    return json({ reply });
+  } catch (err) {
+    console.error("Worker error:", err);
+    return json({ error: "Internal error." }, 500);
+  }
+}
+
+// ─────────────────────────────────────────────
+// CONTACT FORM HANDLER (Resend)
+// ─────────────────────────────────────────────
+async function handleContact(request, env) {
+  if (!env.RESEND_API_KEY) {
+    return json({ error: "Server not configured: RESEND_API_KEY missing." }, 500);
+  }
+
+  let body;
+  try {
+    body = await request.json();
+  } catch {
+    return json({ error: "Invalid JSON" }, 400);
+  }
+
+  const formType = typeof body.formType === "string" ? body.formType : "contact";
+  const meta = FORM_TYPES[formType] || FORM_TYPES.contact;
+
+  const fields = body.fields && typeof body.fields === "object" ? body.fields : null;
+  if (!fields) {
+    return json({ error: "Missing 'fields' object" }, 400);
+  }
+
+  // Light validation
+  const email = String(fields.email || "").trim();
+  if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    return json({ error: "A valid email address is required." }, 400);
+  }
+  const message = String(fields.message || "").trim();
+  // Quote / demo forms use a different textarea name — fall back gracefully
+  const hasAnyMessage =
+    message ||
+    String(fields.project || "").trim() ||
+    String(fields.notes || "").trim();
+  if (!hasAnyMessage && formType === "contact") {
+    return json({ error: "Message is required." }, 400);
+  }
+
+  // Cap any single field at 5000 chars and total payload size implicitly via field count
+  const safeFields = {};
+  for (const [k, v] of Object.entries(fields)) {
+    safeFields[k] = String(v ?? "").slice(0, 5000);
+  }
+
+  // Honeypot — silently succeed if a bot filled the hidden field
+  if (safeFields._hp) {
+    return json({ ok: true });
+  }
+  delete safeFields._hp;
+
+  const subject = `[DataDiggers Site] ${meta.subject}`;
+  const html = renderEmailHtml(meta.label, safeFields);
+  const text = renderEmailText(meta.label, safeFields);
+
+  try {
+    const resp = await fetch("https://api.resend.com/emails", {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${env.RESEND_API_KEY}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        from: CONTACT_FROM,
+        to: [CONTACT_TO],
+        reply_to: email,
+        subject,
+        html,
+        text,
+      }),
+    });
+
+    if (!resp.ok) {
+      const errText = await resp.text();
+      console.error("Resend error:", resp.status, errText);
+      return json({ error: "Email service error." }, 502);
+    }
+
+    return json({ ok: true });
+  } catch (err) {
+    console.error("Contact handler error:", err);
+    return json({ error: "Internal error." }, 500);
+  }
+}
+
+function escapeHtml(s) {
+  return String(s)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+}
+
+function renderEmailHtml(label, fields) {
+  const rows = Object.entries(fields)
+    .map(
+      ([k, v]) =>
+        `<tr><td style="padding:6px 12px;border-bottom:1px solid #eee;font-weight:600;text-transform:capitalize">${escapeHtml(k)}</td><td style="padding:6px 12px;border-bottom:1px solid #eee;white-space:pre-wrap">${escapeHtml(v)}</td></tr>`
+    )
+    .join("");
+  return `
+<!DOCTYPE html>
+<html><body style="font-family:Arial,sans-serif;color:#0b3a2e;background:#f6faf8;padding:24px">
+  <h2 style="margin:0 0 8px">${escapeHtml(label)} submission</h2>
+  <p style="margin:0 0 16px;color:#555">Received via the DataDiggers website.</p>
+  <table style="border-collapse:collapse;background:#fff;border:1px solid #ddd;width:100%;max-width:640px">${rows}</table>
+</body></html>`;
+}
+
+function renderEmailText(label, fields) {
+  const lines = Object.entries(fields).map(([k, v]) => `${k}: ${v}`);
+  return `${label} submission\n\n${lines.join("\n")}\n`;
+}
 
 function corsHeaders() {
   return {

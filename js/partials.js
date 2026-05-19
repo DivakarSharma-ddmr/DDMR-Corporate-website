@@ -9,7 +9,6 @@
   const headerHTML = `
     <div class="container nav">
       <a href="${r}index.html" class="brand">
-        <span class="brand-mark">DD</span>
         <span>DataDiggers</span>
       </a>
       <nav>
@@ -59,7 +58,6 @@
       <div class="footer-grid">
         <div class="footer-brand">
           <div class="brand">
-            <span class="brand-mark">DD</span>
             <span>DataDiggers</span>
           </div>
           <p>Technology-driven market research. Trusted by 1,000+ clients across 65+ countries since 2015.</p>
