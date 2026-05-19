@@ -14,7 +14,7 @@
     //   - Cloudflare Worker:  https://<your-worker>.workers.dev/api/chat
     //   - Vercel:             https://<your-app>.vercel.app/api/chat
     //   - Same-origin Vercel: /api/chat
-    apiEndpoint: window.DD_CHAT_ENDPOINT || '/api/chat',
+    apiEndpoint: window.DD_CHAT_ENDPOINT || 'https://datadiggers-chat.divakar-sharma.workers.dev/api/chat',
 
     welcomeMessage:
       "👋 Hi! I'm the DataDiggers assistant. I can answer questions about our company, our 2M+ panelist network, our solutions (Brainactive, Syntheo, Modeliq, Correlix, NeoPulse, Omnibus), or the market research industry in general. What can I help you with?",
