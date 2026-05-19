@@ -1,0 +1,10 @@
+{
+  "name": "datadiggers-chat-vercel",
+  "version": "1.0.0",
+  "description": "Vercel serverless function proxying chat requests from the DataDiggers website to Anthropic's Claude API.",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=18"
+  }
+}

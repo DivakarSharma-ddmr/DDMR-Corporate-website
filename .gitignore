@@ -1,0 +1,29 @@
+# Dependencies
+node_modules/
+.pnp
+.pnp.js
+
+# Local env / secrets — NEVER commit
+.env
+.env.local
+.env.*.local
+.dev.vars
+
+# Wrangler / Cloudflare
+.wrangler/
+wrangler.toml.bak
+
+# Vercel
+.vercel
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Editors
+.idea/
+.vscode/
+*.swp
+
+# Claude Code
+.claude/

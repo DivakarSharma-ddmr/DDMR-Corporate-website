@@ -1,0 +1,17 @@
+name = "datadiggers-chat"
+main = "worker.js"
+compatibility_date = "2025-01-01"
+
+# After running `wrangler deploy`, your worker will be available at:
+#   https://datadiggers-chat.<your-subdomain>.workers.dev/api/chat
+#
+# Set your API key as a secret (NEVER commit it):
+#   npx wrangler secret put ANTHROPIC_API_KEY
+#
+# To restrict CORS to your domain only, edit worker.js corsHeaders().
+# To bind to a custom domain, see https://developers.cloudflare.com/workers/configuration/routing/custom-domains/
+
+# Optional: routes (uncomment and customize when you have a custom domain)
+# [[routes]]
+# pattern = "chat.datadiggers-mr.com/*"
+# custom_domain = true
