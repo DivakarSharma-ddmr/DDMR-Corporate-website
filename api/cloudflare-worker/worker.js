@@ -75,10 +75,12 @@ const MODEL = "claude-haiku-4-5-20251001";
 // ─────────────────────────────────────────────
 // CONTACT FORM CONFIGURATION
 // ─────────────────────────────────────────────
-const CONTACT_TO = "rfq@datadiggers-mr.com";
-// Until you verify your domain in Resend, all email must be sent FROM
-// onboarding@resend.dev. After verification, change this to e.g.
+// Resend sandbox restriction: until datadiggers-mr.com is verified at
+// resend.com/domains, sandbox accounts can only send TO the email address
+// the Resend account was registered with. Once the domain is verified,
+// change CONTACT_TO back to "rfq@datadiggers-mr.com" and CONTACT_FROM to
 // "DataDiggers Website <forms@datadiggers-mr.com>".
+const CONTACT_TO = "divakar.sharma@datadiggers-mr.com";
 const CONTACT_FROM = "DataDiggers Website <onboarding@resend.dev>";
 
 const FORM_TYPES = {
