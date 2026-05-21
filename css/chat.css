@@ -1,5 +1,15 @@
 /* ============================================================
    DataDiggers AI Chat Widget
+   Brand colours match the corporate Webflow site:
+     --green-primary   #355146   (green primary 700)
+     --green-900       #293832   (deeper)
+     --green-600       #3e6353   (medium)
+     --green-400       #6a9783   (light)
+     --green-200       #bbd4c7   (very light)
+     --green-100       #ddeae3
+     --green-50        #f5f8f6
+     --orange-primary  #ea7f62   (orange primary 500)
+     --orange-600      #d4512e
    ============================================================ */
 
 .dd-chat-launcher {
@@ -10,38 +20,46 @@
   width: 64px;
   height: 64px;
   border-radius: 50%;
-  background: linear-gradient(135deg, var(--green-700, #1f6f54), var(--green-900, #0b3a2e));
+  background: #355146;
   color: #fff;
-  box-shadow: 0 12px 32px rgba(11, 58, 46, 0.35);
+  box-shadow: 0 12px 32px rgba(41, 56, 50, 0.40);
   display: grid;
   place-items: center;
   cursor: pointer;
-  transition: transform 0.2s, box-shadow 0.2s;
+  border: none;
+  transition: transform 0.2s, box-shadow 0.2s, background 0.2s;
 }
 .dd-chat-launcher:hover {
   transform: translateY(-3px) scale(1.04);
-  box-shadow: 0 16px 40px rgba(11, 58, 46, 0.45);
+  box-shadow: 0 16px 40px rgba(41, 56, 50, 0.50);
+  background: #293832;
 }
 .dd-chat-launcher::after {
   content: "";
   position: absolute;
   inset: -6px;
   border-radius: 50%;
-  border: 2px solid rgba(109, 213, 168, 0.6);
+  border: 2px solid rgba(234, 127, 98, 0.6); /* orange brand pulse */
   animation: dd-pulse 2.4s ease-in-out infinite;
+  pointer-events: none;
 }
 @keyframes dd-pulse {
-  0% { transform: scale(0.95); opacity: 0.7; }
-  70% { transform: scale(1.15); opacity: 0; }
+  0%   { transform: scale(0.95); opacity: 0.7; }
+  70%  { transform: scale(1.15); opacity: 0; }
   100% { transform: scale(0.95); opacity: 0; }
 }
-.dd-chat-launcher svg { width: 28px; height: 28px; position: relative; z-index: 1; }
+.dd-chat-launcher svg {
+  width: 34px;
+  height: 34px;
+  position: relative;
+  z-index: 1;
+}
 .dd-chat-launcher .badge {
   position: absolute;
   top: -2px; right: -2px;
   width: 18px; height: 18px;
   border-radius: 50%;
-  background: #ff4d4f;
+  background: #ea7f62;            /* brand orange */
   color: #fff;
   font-size: 0.7rem;
   font-weight: 700;
@@ -59,7 +77,7 @@
   height: min(580px, calc(100vh - 140px));
   background: #ffffff;
   border-radius: 20px;
-  box-shadow: 0 24px 60px rgba(11, 58, 46, 0.30);
+  box-shadow: 0 24px 60px rgba(41, 56, 50, 0.30);
   display: flex;
   flex-direction: column;
   overflow: hidden;
@@ -67,7 +85,7 @@
   visibility: hidden;
   transform: translateY(20px) scale(0.96);
   transition: opacity 0.25s ease, visibility 0.25s ease, transform 0.25s ease;
-  font-family: "Manrope", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-family: "Manrope", "Lato", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
 }
 .dd-chat-panel.open {
   opacity: 1;
@@ -76,7 +94,7 @@
 }
 
 .dd-chat-header {
-  background: linear-gradient(135deg, #0b3a2e, #1f6f54);
+  background: #355146;            /* brand primary green */
   color: #fff;
   padding: 1.1rem 1.2rem;
   display: flex;
@@ -86,13 +104,16 @@
 .dd-chat-header .agent-avatar {
   width: 42px; height: 42px;
   border-radius: 50%;
-  background: linear-gradient(135deg, #6dd5a8, #2e8a6b);
+  background: #fff;
   display: grid; place-items: center;
-  color: #fff;
-  font-weight: 800;
-  font-size: 1.05rem;
+  color: #355146;                 /* logo's main shape renders green on white */
+  flex-shrink: 0;
 }
-.dd-chat-header .agent-info { flex: 1; }
+.dd-chat-header .agent-avatar svg {
+  width: 28px;
+  height: 28px;
+}
+.dd-chat-header .agent-info { flex: 1; min-width: 0; }
 .dd-chat-header .agent-info h4 {
   font-family: inherit;
   font-size: 1rem;
@@ -103,27 +124,30 @@
 }
 .dd-chat-header .agent-info .status {
   font-size: 0.78rem;
-  color: rgba(255,255,255,0.75);
+  color: rgba(255, 255, 255, 0.75);
   display: flex; align-items: center; gap: 0.4rem;
 }
 .dd-chat-header .agent-info .status::before {
   content: "";
   width: 8px; height: 8px;
   border-radius: 50%;
-  background: #6dd5a8;
-  box-shadow: 0 0 8px #6dd5a8;
+  background: #ea7f62;            /* brand orange "online" dot */
+  box-shadow: 0 0 8px rgba(234, 127, 98, 0.7);
 }
 .dd-chat-header .close-btn {
   width: 32px; height: 32px;
   border-radius: 8px;
+  background: transparent;
+  border: none;
   color: #fff;
   opacity: 0.85;
   font-size: 1.2rem;
+  cursor: pointer;
   transition: opacity 0.18s, background 0.18s;
 }
 .dd-chat-header .close-btn:hover {
   opacity: 1;
-  background: rgba(255,255,255,0.12);
+  background: rgba(255, 255, 255, 0.12);
 }
 
 .dd-chat-messages {
@@ -133,11 +157,11 @@
   display: flex;
   flex-direction: column;
   gap: 0.85rem;
-  background: #f7faf8;
+  background: #f5f8f6;            /* green-50 */
   scroll-behavior: smooth;
 }
 .dd-chat-messages::-webkit-scrollbar { width: 6px; }
-.dd-chat-messages::-webkit-scrollbar-thumb { background: #c8d3d0; border-radius: 4px; }
+.dd-chat-messages::-webkit-scrollbar-thumb { background: #bbd4c7; border-radius: 4px; }
 .dd-chat-messages::-webkit-scrollbar-track { background: transparent; }
 
 .dd-msg {
@@ -151,17 +175,17 @@
 }
 @keyframes dd-msg-in {
   from { opacity: 0; transform: translateY(6px); }
-  to { opacity: 1; transform: translateY(0); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 .dd-msg.bot {
   background: #fff;
-  color: #2a3a35;
+  color: #293832;                 /* dark green text */
   align-self: flex-start;
-  border: 1px solid #e6ebe9;
+  border: 1px solid #ddeae3;      /* green-100 */
   border-bottom-left-radius: 6px;
 }
 .dd-msg.user {
-  background: linear-gradient(135deg, #1f6f54, #0b3a2e);
+  background: #355146;            /* brand primary green */
   color: #fff;
   align-self: flex-end;
   border-bottom-right-radius: 6px;
@@ -170,7 +194,7 @@
 .dd-msg p:last-child { margin-bottom: 0; }
 .dd-msg ul, .dd-msg ol { margin: 0.5rem 0 0.5rem 1.2rem; }
 .dd-msg a { color: inherit; text-decoration: underline; }
-.dd-msg.bot a { color: #1f6f54; }
+.dd-msg.bot a { color: #355146; }
 .dd-msg strong { font-weight: 700; }
 
 .dd-msg.typing {
@@ -180,14 +204,14 @@
 .dd-msg.typing span {
   width: 7px; height: 7px;
   border-radius: 50%;
-  background: #94a39e;
+  background: #6a9783;            /* green-400 */
   animation: dd-bounce 1.2s ease-in-out infinite;
 }
 .dd-msg.typing span:nth-child(2) { animation-delay: 0.15s; }
 .dd-msg.typing span:nth-child(3) { animation-delay: 0.3s; }
 @keyframes dd-bounce {
   0%, 60%, 100% { transform: translateY(0); opacity: 0.5; }
-  30% { transform: translateY(-6px); opacity: 1; }
+  30%           { transform: translateY(-6px); opacity: 1; }
 }
 
 .dd-quick-replies {
@@ -195,29 +219,30 @@
   flex-wrap: wrap;
   gap: 0.4rem;
   padding: 0.4rem 1.2rem 0.8rem;
-  background: #f7faf8;
+  background: #f5f8f6;
 }
 .dd-quick-replies button {
   background: #fff;
-  border: 1px solid #d6f1e3;
-  color: #1f6f54;
+  border: 1px solid #bbd4c7;      /* green-200 */
+  color: #355146;
   padding: 0.42rem 0.8rem;
   border-radius: 99px;
   font-size: 0.82rem;
   font-weight: 500;
+  font-family: inherit;
   cursor: pointer;
-  transition: all 0.18s;
+  transition: background 0.18s, color 0.18s, border-color 0.18s;
 }
 .dd-quick-replies button:hover {
-  background: #1f6f54;
+  background: #355146;
   color: #fff;
-  border-color: #1f6f54;
+  border-color: #355146;
 }
 
 .dd-chat-input-bar {
   padding: 0.75rem;
   background: #fff;
-  border-top: 1px solid #e6ebe9;
+  border-top: 1px solid #ddeae3;  /* green-100 */
   display: flex;
   gap: 0.5rem;
   align-items: flex-end;
@@ -225,31 +250,35 @@
 .dd-chat-input-bar textarea {
   flex: 1;
   padding: 0.65rem 0.85rem;
-  border: 1.5px solid #e6ebe9;
+  border: 1.5px solid #ddeae3;
   border-radius: 16px;
   font: inherit;
   font-size: 0.92rem;
   resize: none;
   max-height: 90px;
-  background: #f7faf8;
+  background: #f5f8f6;
+  color: #293832;
   transition: border-color 0.18s, background 0.18s;
   font-family: inherit;
 }
 .dd-chat-input-bar textarea:focus {
   outline: none;
-  border-color: #2e8a6b;
+  border-color: #355146;
   background: #fff;
 }
 .dd-chat-input-bar .send-btn {
   width: 40px; height: 40px;
   flex-shrink: 0;
   border-radius: 50%;
-  background: linear-gradient(135deg, #1f6f54, #0b3a2e);
+  background: #355146;
+  border: none;
   color: #fff;
+  cursor: pointer;
   display: grid; place-items: center;
-  transition: opacity 0.18s, transform 0.18s;
+  transition: background 0.18s, opacity 0.18s, transform 0.18s;
 }
-.dd-chat-input-bar .send-btn:hover {
+.dd-chat-input-bar .send-btn:hover:not(:disabled) {
+  background: #293832;
   transform: scale(1.05);
 }
 .dd-chat-input-bar .send-btn:disabled {
@@ -263,10 +292,10 @@
   padding: 0.5rem 1.2rem 0.75rem;
   text-align: center;
   font-size: 0.72rem;
-  color: #94a39e;
+  color: #6a9783;                 /* green-400, muted */
   background: #fff;
 }
-.dd-chat-footer strong { color: #1f6f54; font-weight: 600; }
+.dd-chat-footer strong { color: #355146; font-weight: 600; }
 
 @media (max-width: 480px) {
   .dd-chat-panel {

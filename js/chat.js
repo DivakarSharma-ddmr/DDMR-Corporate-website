@@ -54,13 +54,20 @@
   // ─────────────────────────────────────────────
   function buildWidget() {
     // Launcher
+    // DD logo mark — the green semicircle + orange accent dot from the navbar logo.
+    // The main path inherits currentColor; the accent is brand orange.
+    const ddMarkSvg = `
+      <svg viewBox="80 3 32 32" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <path d="M82.48 32.97C90.17 32.93 96.39 26.69 96.39 19C96.39 11.3 90.17 5.06 82.48 5.02V32.97Z" fill="currentColor"/>
+        <path d="M101.42 27.68C106.16 27.66 110 23.81 110 19.06C110 14.31 106.16 10.45 101.42 10.43V27.68Z" fill="#ea7f62"/>
+      </svg>
+    `;
+
     const launcher = document.createElement('button');
     launcher.className = 'dd-chat-launcher';
     launcher.setAttribute('aria-label', 'Open DataDiggers chat');
     launcher.innerHTML = `
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
-      </svg>
+      ${ddMarkSvg}
       <span class="badge" style="display:none">1</span>
     `;
     document.body.appendChild(launcher);
@@ -74,7 +81,7 @@
     panel.setAttribute('aria-label', 'DataDiggers chat');
     panel.innerHTML = `
       <div class="dd-chat-header">
-        <div class="agent-avatar">DD</div>
+        <div class="agent-avatar">${ddMarkSvg}</div>
         <div class="agent-info">
           <h4>DataDiggers Assistant</h4>
           <span class="status">Online</span>
