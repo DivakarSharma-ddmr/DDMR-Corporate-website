@@ -91,7 +91,7 @@
       <div class="dd-chat-messages" role="log" aria-live="polite"></div>
       <div class="dd-quick-replies"></div>
       <div class="dd-chat-input-bar">
-        <textarea rows="1" placeholder="${CONFIG.placeholder}" aria-label="Type your message"></textarea>
+        <textarea rows="3" placeholder="${CONFIG.placeholder}" aria-label="Type your message"></textarea>
         <button class="send-btn" aria-label="Send message" disabled>
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
             <line x1="22" y1="2" x2="11" y2="13"></line>
@@ -136,7 +136,7 @@
 
   function autoGrow(el) {
     el.style.height = 'auto';
-    el.style.height = Math.min(el.scrollHeight, 90) + 'px';
+    el.style.height = Math.min(el.scrollHeight, 160) + 'px';
   }
 
   function toggleOpen() {

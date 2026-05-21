@@ -10,6 +10,10 @@
      --green-50        #f5f8f6
      --orange-primary  #ea7f62   (orange primary 500)
      --orange-600      #d4512e
+
+   The chat panel lives on top of the Webflow page which sets its own
+   global font-size, paragraph margins, and so on. We use !important on
+   the font-size declarations to make sure our typography wins.
    ============================================================ */
 
 .dd-chat-launcher {
@@ -116,15 +120,17 @@
 }
 .dd-chat-header .agent-info { flex: 1; min-width: 0; }
 .dd-chat-header .agent-info h4 {
-  font-family: inherit;
-  font-size: 0.92rem;
+  font-family: inherit !important;
+  font-size: 0.92rem !important;
+  line-height: 1.2 !important;
   font-weight: 700;
   color: #fff;
-  margin: 0;
+  margin: 0 !important;
   display: flex; align-items: center; gap: 0.4rem;
 }
 .dd-chat-header .agent-info .status {
-  font-size: 0.72rem;
+  font-size: 0.72rem !important;
+  line-height: 1.2 !important;
   color: rgba(255, 255, 255, 0.75);
   display: flex; align-items: center; gap: 0.4rem;
 }
@@ -167,12 +173,34 @@
 
 .dd-msg {
   max-width: 90%;
-  padding: 0.6rem 0.85rem;
+  padding: 0.55rem 0.8rem;
   border-radius: 14px;
-  font-size: 0.82rem;
-  line-height: 1.45;
+  font-size: 0.78rem !important;
+  line-height: 1.45 !important;
   animation: dd-msg-in 0.25s ease;
   word-wrap: break-word;
+}
+/* Defeat the Webflow page's global p/h/li styles inside the chat */
+.dd-chat-panel,
+.dd-chat-panel * {
+  box-sizing: border-box;
+}
+.dd-msg p,
+.dd-msg li,
+.dd-msg span,
+.dd-msg strong,
+.dd-msg em,
+.dd-msg a {
+  font-size: 0.78rem !important;
+  line-height: 1.45 !important;
+  font-family: inherit !important;
+  color: inherit;
+}
+.dd-msg p {
+  margin: 0 0 0.4rem !important;
+}
+.dd-msg p:last-child {
+  margin-bottom: 0 !important;
 }
 @keyframes dd-msg-in {
   from { opacity: 0; transform: translateY(6px); }
@@ -191,11 +219,9 @@
   align-self: flex-end;
   border-bottom-right-radius: 6px;
 }
-.dd-msg p { margin: 0 0 0.5rem; }
-.dd-msg p:last-child { margin-bottom: 0; }
-.dd-msg ul, .dd-msg ol { margin: 0.5rem 0 0.5rem 1.2rem; }
+.dd-msg ul, .dd-msg ol { margin: 0.4rem 0 0.4rem 1.2rem !important; padding: 0; }
 .dd-msg a { color: inherit; text-decoration: underline; }
-.dd-msg.bot a { color: #355146; }
+.dd-msg.bot a { color: #355146 !important; }
 .dd-msg strong { font-weight: 700; }
 
 .dd-msg.typing {
@@ -228,9 +254,10 @@
   color: #355146;
   padding: 0.35rem 0.7rem;
   border-radius: 99px;
-  font-size: 0.74rem;
+  font-size: 0.72rem !important;
+  line-height: 1.3 !important;
   font-weight: 500;
-  font-family: inherit;
+  font-family: inherit !important;
   cursor: pointer;
   transition: background 0.18s, color 0.18s, border-color 0.18s;
 }
@@ -250,18 +277,19 @@
 }
 .dd-chat-input-bar textarea {
   flex: 1;
-  padding: 0.55rem 0.8rem;
+  padding: 0.7rem 0.9rem;
   border: 1.5px solid #ddeae3;
   border-radius: 14px;
   font: inherit;
-  font-size: 0.82rem;
-  line-height: 1.45;
+  font-size: 0.85rem !important;
+  line-height: 1.5 !important;
   resize: none;
-  max-height: 100px;
+  min-height: 80px;
+  max-height: 160px;
   background: #f5f8f6;
   color: #293832;
   transition: border-color 0.18s, background 0.18s;
-  font-family: inherit;
+  font-family: inherit !important;
 }
 .dd-chat-input-bar textarea:focus {
   outline: none;
@@ -271,6 +299,7 @@
 .dd-chat-input-bar .send-btn {
   width: 40px; height: 40px;
   flex-shrink: 0;
+  align-self: flex-end;
   border-radius: 50%;
   background: #355146;
   border: none;
@@ -291,9 +320,10 @@
 .dd-chat-input-bar .send-btn svg { width: 18px; height: 18px; }
 
 .dd-chat-footer {
-  padding: 0.45rem 1.1rem 0.7rem;
+  padding: 0.4rem 1.1rem 0.6rem;
   text-align: center;
-  font-size: 0.66rem;
+  font-size: 0.62rem !important;
+  line-height: 1.3 !important;
   color: #6a9783;                 /* green-400, muted */
   background: #fff;
 }
