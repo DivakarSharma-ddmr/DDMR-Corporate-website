@@ -73,8 +73,8 @@
   bottom: 100px;
   right: 24px;
   z-index: 999;
-  width: min(380px, calc(100vw - 32px));
-  height: min(580px, calc(100vh - 140px));
+  width: min(400px, calc(100vw - 32px));
+  height: min(720px, calc(100vh - 120px));
   background: #ffffff;
   border-radius: 20px;
   box-shadow: 0 24px 60px rgba(41, 56, 50, 0.30);
@@ -96,13 +96,14 @@
 .dd-chat-header {
   background: #355146;            /* brand primary green */
   color: #fff;
-  padding: 1.1rem 1.2rem;
+  padding: 0.85rem 1.1rem;
   display: flex;
   align-items: center;
-  gap: 0.8rem;
+  gap: 0.7rem;
+  flex-shrink: 0;
 }
 .dd-chat-header .agent-avatar {
-  width: 42px; height: 42px;
+  width: 36px; height: 36px;
   border-radius: 50%;
   background: #fff;
   display: grid; place-items: center;
@@ -110,20 +111,20 @@
   flex-shrink: 0;
 }
 .dd-chat-header .agent-avatar svg {
-  width: 28px;
-  height: 28px;
+  width: 24px;
+  height: 24px;
 }
 .dd-chat-header .agent-info { flex: 1; min-width: 0; }
 .dd-chat-header .agent-info h4 {
   font-family: inherit;
-  font-size: 1rem;
+  font-size: 0.92rem;
   font-weight: 700;
   color: #fff;
   margin: 0;
   display: flex; align-items: center; gap: 0.4rem;
 }
 .dd-chat-header .agent-info .status {
-  font-size: 0.78rem;
+  font-size: 0.72rem;
   color: rgba(255, 255, 255, 0.75);
   display: flex; align-items: center; gap: 0.4rem;
 }
@@ -153,10 +154,10 @@
 .dd-chat-messages {
   flex: 1;
   overflow-y: auto;
-  padding: 1.2rem;
+  padding: 1rem 1.1rem;
   display: flex;
   flex-direction: column;
-  gap: 0.85rem;
+  gap: 0.7rem;
   background: #f5f8f6;            /* green-50 */
   scroll-behavior: smooth;
 }
@@ -165,11 +166,11 @@
 .dd-chat-messages::-webkit-scrollbar-track { background: transparent; }
 
 .dd-msg {
-  max-width: 88%;
-  padding: 0.7rem 1rem;
-  border-radius: 16px;
-  font-size: 0.93rem;
-  line-height: 1.5;
+  max-width: 90%;
+  padding: 0.6rem 0.85rem;
+  border-radius: 14px;
+  font-size: 0.82rem;
+  line-height: 1.45;
   animation: dd-msg-in 0.25s ease;
   word-wrap: break-word;
 }
@@ -217,17 +218,17 @@
 .dd-quick-replies {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.4rem;
-  padding: 0.4rem 1.2rem 0.8rem;
+  gap: 0.35rem;
+  padding: 0.3rem 1.1rem 0.7rem;
   background: #f5f8f6;
 }
 .dd-quick-replies button {
   background: #fff;
   border: 1px solid #bbd4c7;      /* green-200 */
   color: #355146;
-  padding: 0.42rem 0.8rem;
+  padding: 0.35rem 0.7rem;
   border-radius: 99px;
-  font-size: 0.82rem;
+  font-size: 0.74rem;
   font-weight: 500;
   font-family: inherit;
   cursor: pointer;
@@ -249,13 +250,14 @@
 }
 .dd-chat-input-bar textarea {
   flex: 1;
-  padding: 0.65rem 0.85rem;
+  padding: 0.55rem 0.8rem;
   border: 1.5px solid #ddeae3;
-  border-radius: 16px;
+  border-radius: 14px;
   font: inherit;
-  font-size: 0.92rem;
+  font-size: 0.82rem;
+  line-height: 1.45;
   resize: none;
-  max-height: 90px;
+  max-height: 100px;
   background: #f5f8f6;
   color: #293832;
   transition: border-color 0.18s, background 0.18s;
@@ -289,9 +291,9 @@
 .dd-chat-input-bar .send-btn svg { width: 18px; height: 18px; }
 
 .dd-chat-footer {
-  padding: 0.5rem 1.2rem 0.75rem;
+  padding: 0.45rem 1.1rem 0.7rem;
   text-align: center;
-  font-size: 0.72rem;
+  font-size: 0.66rem;
   color: #6a9783;                 /* green-400, muted */
   background: #fff;
 }
@@ -303,8 +305,8 @@
     left: 12px;
     bottom: 88px;
     width: auto;
-    height: calc(100vh - 110px);
-    max-height: 640px;
+    height: calc(100vh - 100px);
+    max-height: 760px;
   }
   .dd-chat-launcher {
     right: 16px;
